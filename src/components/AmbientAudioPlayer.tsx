@@ -266,7 +266,7 @@ export const AmbientAudioPlayer: React.FC = () => {
                 mode === 'mp3' ? 'bg-[#E8B4B8] text-[#2B3A4A] shadow' : 'text-white/70 hover:text-white'
               }`}
             >
-              🎵 Balisong (MP3)
+              Balisong (MP3)
             </button>
             <button
               onClick={() => handleModeSwitch('synth')}
@@ -274,7 +274,7 @@ export const AmbientAudioPlayer: React.FC = () => {
                 mode === 'synth' ? 'bg-[#E8B4B8] text-[#2B3A4A] shadow' : 'text-white/70 hover:text-white'
               }`}
             >
-              ✨ Soft Synth
+              Soft Synth
             </button>
           </div>
 
