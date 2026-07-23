@@ -15,35 +15,35 @@ export const About: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Left Column: Image Card */}
         <div className="lg:col-span-5 flex justify-center">
-          <div className="ph-frame w-full max-w-md aspect-[4/5] relative rounded-3xl border border-pinkCustom/30 shadow-2xl group overflow-hidden">
+          <div className="ph-frame w-full max-w-md aspect-[4/5] relative rounded-3xl border border-border shadow-xl group overflow-hidden">
             <img
               src={ABOUT_DATA.aboutImage}
               alt="About Sophia"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-bgDeep/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-bg/80 via-transparent to-transparent pointer-events-none" />
           </div>
         </div>
 
         {/* Right Column: Narrative & Highlights */}
         <div className="lg:col-span-7 flex flex-col justify-center">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-pinkCustom-soft uppercase mb-3">
-            <span className="w-6 h-px bg-pinkCustom-soft" />
+          <div className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-accent uppercase mb-3">
+            <span className="w-6 h-px bg-accent" />
             <span>{ABOUT_DATA.eyebrow}</span>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-text-primary leading-tight">
             {ABOUT_DATA.title}
           </h2>
 
-          <div className="space-y-4 text-textMuted text-base sm:text-lg leading-relaxed mb-8">
+          <div className="space-y-4 text-text-muted text-base sm:text-lg leading-relaxed mb-8">
             <p>{ABOUT_DATA.bioParagraph1}</p>
             <p>{ABOUT_DATA.bioParagraph2}</p>
           </div>
 
           {/* Quote Box */}
-          <div className="p-6 rounded-2xl bg-white/5 border-l-4 border-pinkCustom backdrop-blur-md mb-8">
-            <p className="font-serif italic text-lg sm:text-xl text-textLight">
+          <div className="p-6 rounded-2xl bg-surface border-l-4 border-accent-warm mb-8">
+            <p className="font-serif italic text-lg sm:text-xl text-text-primary">
               {ABOUT_DATA.quote}
             </p>
           </div>
@@ -55,14 +55,14 @@ export const About: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-pinkCustom/40 transition-all duration-300 flex items-start gap-3.5 group"
+                  className="p-4 rounded-2xl bg-surface border border-border hover:border-accent/40 transition-all duration-300 flex items-start gap-3.5 group"
                 >
-                  <div className="p-2.5 rounded-xl bg-purpleCustom/20 text-pinkCustom group-hover:bg-gradient-to-r group-hover:from-purpleCustom group-hover:to-pinkCustom group-hover:text-white transition-all duration-300">
+                  <div className="p-2.5 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-bg transition-all duration-300">
                     <IconComp className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-white mb-0.5">{item.title}</h4>
-                    <p className="text-xs text-textMuted leading-normal">{item.desc}</p>
+                    <h4 className="text-sm font-semibold text-text-primary mb-0.5">{item.title}</h4>
+                    <p className="text-xs text-text-muted leading-normal">{item.desc}</p>
                   </div>
                 </div>
               );

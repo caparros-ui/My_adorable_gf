@@ -16,15 +16,15 @@ export const AmbientGlow: React.FC = () => {
     <>
       {/* Dynamic Cursor Light Follower */}
       <div
-        className="fixed top-0 left-0 w-[600px] h-[600px] rounded-full pointer-events-none z-0 filter blur-[80px] transition-transform duration-300 ease-out hidden md:block"
+        className="fixed top-0 left-0 w-[600px] h-[600px] rounded-full pointer-events-none z-0 filter blur-[100px] transition-transform duration-300 ease-out hidden md:block"
         style={{
           transform: `translate(${position.x - 300}px, ${position.y - 300}px)`,
-          background: 'radial-gradient(circle, rgba(236,72,153,0.18), transparent 70%)',
+          background: 'radial-gradient(circle, rgba(232,180,184,0.05), transparent 70%)',
         }}
       />
       {/* Background Decorative Mesh Blobs */}
-      <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-purpleCustom/20 blur-[140px] pointer-events-none z-0" />
-      <div className="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-pinkCustom/15 blur-[150px] pointer-events-none z-0" />
+      <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-accent/5 blur-[140px] pointer-events-none z-0" />
+      <div className="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-accent-warm/5 blur-[150px] pointer-events-none z-0" />
     </>
   );
 };

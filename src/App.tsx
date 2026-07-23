@@ -5,7 +5,6 @@ import { HeaderNav } from './components/HeaderNav';
 import { Hero } from './components/Hero';
 import { ChapterSlideSection } from './components/ChapterSlideSection';
 import { DotNavigation } from './components/DotNavigation';
-import { FloatingHearts } from './components/FloatingHearts';
 import { LoveNotesModal } from './components/LoveNotesModal';
 import { PhotoEditorModal } from './components/PhotoEditorModal';
 import { SecretVaultModal } from './components/SecretVaultModal';
@@ -13,29 +12,8 @@ import { LightboxModal } from './components/LightboxModal';
 import { FooterCredits } from './components/FooterCredits';
 
 export const App: React.FC = () => {
-  const [chapters, setChapters] = useState<Chapter[]>(() => {
-    const saved = localStorage.getItem('her_us_chapters');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return DEFAULT_CHAPTERS;
-      }
-    }
-    return DEFAULT_CHAPTERS;
-  });
-
-  const [loveNotes, setLoveNotes] = useState<LoveNote[]>(() => {
-    const saved = localStorage.getItem('her_us_love_notes');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return INITIAL_LOVE_NOTES;
-      }
-    }
-    return INITIAL_LOVE_NOTES;
-  });
+  const [chapters, setChapters] = useState<Chapter[]>(DEFAULT_CHAPTERS);
+  const [loveNotes, setLoveNotes] = useState<LoveNote[]>(INITIAL_LOVE_NOTES);
 
   const [activeChapter, setActiveChapter] = useState<number>(1);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -117,9 +95,8 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0d0617] text-purple-50 font-sans selection:bg-pink-500 selection:text-white overflow-x-hidden">
-      {/* Background Floating Hearts */}
-      <FloatingHearts />
+    <div className="relative min-h-screen bg-[#2B3A4A] text-[#F0ECE2] font-sans selection:bg-[#E8B4B8] selection:text-[#2B3A4A] overflow-x-hidden">
+      {/* Navigation Header Bar */}
 
       {/* Navigation Header Bar */}
       <HeaderNav

@@ -4,11 +4,13 @@
 
 @layer base {
   :root {
-    --purple-primary: #a855f7;
-    --pink-primary: #ec4899;
-    --magenta-primary: #d946ef;
-    --violet-dark: #0d0617;
-    --purple-deep: #150a24;
+    --bg: #2B3A4A;            /* page background */
+    --surface: #33455A;       /* cards/panels — one step lighter than bg */
+    --text-primary: #F0ECE2;  /* body text, headings */
+    --text-muted: #B8B5C8;    /* captions, dates, chapter numbers */
+    --accent: #E8B4B8;        /* links, active states, chapter dividers */
+    --accent-warm: #E8D5A8;   /* hover states, quote marks, small highlights */
+    --border: rgba(240, 236, 226, 0.12); /* hairlines on dark bg */
   }
 
   html {
@@ -17,56 +19,37 @@
   }
 
   body {
-    @apply transition-colors duration-500 antialiased bg-[#0d0617] text-purple-50 selection:bg-pink-500 selection:text-white overflow-x-hidden;
+    @apply transition-colors duration-500 antialiased bg-[#2B3A4A] text-[#F0ECE2] selection:bg-[#E8B4B8] selection:text-[#2B3A4A] overflow-x-hidden;
   }
 
-  /* Custom Romantic Scrollbar */
+  /* Custom Editorial Scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #0d0617;
+    background: #2B3A4A;
   }
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #a855f7, #ec4899);
+    background: #B8B5C8;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, #c084fc, #f472b6);
+    background: #E8B4B8;
   }
 }
 
-/* Glassmorphism & Neon Glow Utilities */
+/* Panel & Card Utilities — Editorial & Flat */
 .glass-panel {
-  background: rgba(21, 10, 36, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(236, 72, 153, 0.2);
+  background: #33455A;
+  border: 1px solid rgba(240, 236, 226, 0.12);
 }
 
 .glass-panel-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .glass-panel-hover:hover {
-  background: rgba(30, 14, 52, 0.8);
-  border-color: rgba(217, 70, 239, 0.45);
-  box-shadow: 0 10px 30px -10px rgba(217, 70, 239, 0.3);
-}
-
-.glow-pink-text {
-  text-shadow: 0 0 20px rgba(236, 72, 153, 0.6), 0 0 40px rgba(217, 70, 239, 0.3);
-}
-
-.glow-purple-text {
-  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(139, 92, 246, 0.3);
-}
-
-.glow-box-pink {
-  box-shadow: 0 0 25px rgba(236, 72, 153, 0.35);
-}
-
-.glow-box-purple {
-  box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+  background: #3a4e66;
+  border-color: rgba(232, 180, 184, 0.3);
 }
 
 /* Animations */

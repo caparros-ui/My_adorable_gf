@@ -7,20 +7,29 @@ export default {
   theme: {
     extend: {
       colors: {
-        bgBase: '#150a24',
-        bgDeep: '#0d0617',
+        bgBase: '#2B3A4A',
+        bgDeep: '#2B3A4A',
         purpleCustom: {
-          DEFAULT: '#8b2fc9',
-          deep: '#5b1f96',
-          glow: 'rgba(139, 47, 201, 0.45)'
+          DEFAULT: '#E8D5A8',
+          deep: '#33455A',
+          glow: 'transparent'
         },
         pinkCustom: {
-          DEFAULT: '#ec4899',
-          soft: '#f9a8d4',
-          glow: 'rgba(236, 72, 153, 0.45)'
+          DEFAULT: '#E8B4B8',
+          soft: '#E8B4B8',
+          glow: 'transparent'
         },
-        textLight: '#f5eefc',
-        textMuted: '#c3aede'
+        textLight: '#F0ECE2',
+        textMuted: '#B8B5C8',
+        bg: '#2B3A4A',
+        surface: '#33455A',
+        'text-primary': '#F0ECE2',
+        'text-muted': '#B8B5C8',
+        accent: {
+          DEFAULT: '#E8B4B8',
+          warm: '#E8D5A8',
+        },
+        border: 'rgba(240, 236, 226, 0.12)',
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'serif'],
