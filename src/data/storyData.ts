@@ -1,4 +1,4 @@
-import { Chapter, LoveNote, MemoryStat } from '../types/story';
+import { Chapter, LoveNote } from '../types/story';
 
 export const DEFAULT_CHAPTERS: Chapter[] = [
   {
@@ -155,29 +155,3 @@ export const DEFAULT_CHAPTERS: Chapter[] = [
 
 export const INITIAL_LOVE_NOTES: LoveNote[] = [];
 
-export const MEMORY_STATS: MemoryStat[] = [
-  {
-    label: "Total Chapters",
-    value: "10",
-    iconName: "Calendar",
-    description: "Personalized chapter collection"
-  },
-  {
-    label: "Custom Photos",
-    value: "0",
-    iconName: "Coffee",
-    description: "Upload photos to get started"
-  },
-  {
-    label: "Story Notes",
-    value: "0",
-    iconName: "Compass",
-    description: "Add notes & memories"
-  },
-  {
-    label: "Gallery Status",
-    value: "Ready",
-    iconName: "Sparkles",
-    description: "Blank canvas template"
-  }
-];

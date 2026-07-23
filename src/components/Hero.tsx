@@ -1,6 +1,5 @@
 import React from 'react';
-import { Sparkles, ChevronDown, Calendar, Coffee, Compass } from 'lucide-react';
-import { MEMORY_STATS } from '../data/storyData';
+import { Sparkles, ChevronDown } from 'lucide-react';
 
 interface HeroProps {
   onStartJourney: () => void;
@@ -28,27 +27,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartJourney }) => {
         A floating glassmorphic gallery template. Upload your own pictures and add custom descriptions for each chapter below.
       </p>
 
-      {/* Live Memory Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 max-w-4xl w-full mb-10 sm:mb-12">
-        {MEMORY_STATS.map((stat, idx) => (
-          <div
-            key={idx}
-            className="glass-panel glass-panel-hover p-3 sm:p-4 rounded-2xl flex flex-col items-center justify-center text-center"
-          >
-            <div className="p-1.5 sm:p-2 rounded-full bg-accent/10 text-accent mb-1.5">
-              {idx === 0 && <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />}
-              {idx === 1 && <Coffee className="w-4 h-4 sm:w-5 sm:h-5" />}
-              {idx === 2 && <Compass className="w-4 h-4 sm:w-5 sm:h-5" />}
-              {idx === 3 && <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />}
-            </div>
-            <span className="text-xl sm:text-3xl font-extrabold font-serif text-text-primary">
-              {stat.value}
-            </span>
-            <span className="text-[11px] sm:text-xs font-semibold text-text-muted mt-0.5">{stat.label}</span>
-            <span className="text-[9px] sm:text-[10px] text-text-muted/70 mt-0.5 hidden xs:block">{stat.description}</span>
-          </div>
-        ))}
-      </div>
+
 
       {/* Action Button */}
       <div className="flex flex-col sm:flex-row items-center gap-4">
