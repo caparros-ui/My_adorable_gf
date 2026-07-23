@@ -25,7 +25,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   const currentChapter = chapters.find((c) => c.id === activeChapter) || chapters[0];
 
   return (
-    <header className="fixed top-2 sm:top-4 left-2 right-2 sm:left-1/2 sm:-translate-x-1/2 z-50 max-w-5xl mx-auto px-3 sm:px-5 py-2.5 rounded-2xl sm:rounded-full bg-[#150a24]/80 backdrop-blur-2xl border border-pink-500/30 shadow-[0_15px_35px_rgba(0,0,0,0.85)] hover:border-pink-500/50 hover:shadow-[0_20px_45px_rgba(236,72,153,0.25)] transition-all duration-300">
+    <header className="fixed bottom-3 sm:bottom-5 left-2 right-2 sm:left-1/2 sm:-translate-x-1/2 z-50 max-w-5xl mx-auto px-3 sm:px-5 py-2.5 rounded-2xl sm:rounded-full bg-[#150a24]/80 backdrop-blur-2xl border border-pink-500/30 shadow-[0_15px_35px_rgba(0,0,0,0.85)] hover:border-pink-500/50 hover:shadow-[0_20px_45px_rgba(236,72,153,0.25)] transition-all duration-300">
       <div className="flex items-center justify-between gap-2 sm:gap-4">
         
         {/* Brand Logo & Title */}
@@ -64,7 +64,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
           {/* Chapter Selector Dropdown menu */}
           {dropdownOpen && (
-            <div className="absolute top-full right-0 mt-2 w-60 sm:w-64 max-h-72 overflow-y-auto rounded-2xl bg-[#150a24]/95 border border-pink-500/30 backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.9)] py-2 z-50">
+            <div className="absolute bottom-full right-0 mb-2 w-60 sm:w-64 max-h-72 overflow-y-auto rounded-2xl bg-[#150a24]/95 border border-pink-500/30 backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.9)] py-2 z-50">
               <div className="px-3 py-1.5 border-b border-purple-900/50 text-[10px] font-semibold text-purple-400 uppercase tracking-wider">
                 Jump to Chapter
               </div>
