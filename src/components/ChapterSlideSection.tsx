@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, Quote, Sparkles, Image as ImageIcon, Maximize2, Tag, Upload } from 'lucide-react';
 import { Chapter } from '../types/story';
+import { useLongPress } from '../hooks/useLongPress';
 
 interface ChapterSlideSectionProps {
   chapter: Chapter;
@@ -21,6 +22,14 @@ export const ChapterSlideSection: React.FC<ChapterSlideSectionProps> = ({
   const hasCustomImage = Boolean(chapter.image && chapter.image.trim() !== '' && !imgError);
   const hasDetails = Boolean((chapter.date && chapter.date.trim()) || (chapter.location && chapter.location.trim()));
   const hasQuote = Boolean(chapter.quote && chapter.quote.trim() !== '');
+
+  const longPressProps = useLongPress({
+    onLongPress: () => {
+      if (hasCustomImage) {
+        onOpenLightbox(chapter.image, chapter.title || `Chapter #${chapter.id}`, chapter.quote || '');
+      }
+    }
+  });
 
   return (
     <section
@@ -75,7 +84,11 @@ export const ChapterSlideSection: React.FC<ChapterSlideSectionProps> = ({
             <div className="relative rounded-3xl p-2 sm:p-3 bg-surface border border-border shadow-xl transition-all duration-500">
               
               {/* Picture Container */}
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-bg flex items-center justify-center">
+              <div 
+                className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-bg flex items-center justify-center select-none cursor-pointer"
+                {...longPressProps}
+                onContextMenu={(e) => { if (hasCustomImage) e.preventDefault(); }}
+              >
                 {hasCustomImage ? (
                   <img
                     src={chapter.image}

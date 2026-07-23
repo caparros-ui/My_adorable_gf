@@ -3,6 +3,7 @@ import { PORTFOLIO_ITEMS } from '../data/portfolioData';
 import { PortfolioItem } from '../types';
 import { LightboxModal } from './LightboxModal';
 import { Maximize2, Sparkles } from 'lucide-react';
+import { useLongPress } from '../hooks/useLongPress';
 
 export const Portfolio: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -68,8 +69,12 @@ export const Portfolio: React.FC = () => {
         {filteredItems.map((item, index) => (
           <div
             key={item.id}
-            onClick={() => setSelectedItemIndex(index)}
-            className="group cursor-pointer flex flex-col"
+            {...useLongPress({
+              onLongPress: () => setSelectedItemIndex(index),
+              onClick: () => setSelectedItemIndex(index)
+            })}
+            className="group cursor-pointer flex flex-col select-none"
+            onContextMenu={(e) => e.preventDefault()}
           >
             {/* Image Frame */}
             <div className="ph-frame aspect-square w-full relative overflow-hidden rounded-3xl border border-border group-hover:border-accent/60 transition-all duration-500 shadow-xl group-hover:-translate-y-2">
