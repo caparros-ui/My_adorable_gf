@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Her Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     HOW TO ADD REAL PHOTOS
+     Find any <div class="ph-frame"> ... </div>
+     Inside it, replace the <div class="ph-placeholder">...</div>
+     with:  <img class="ph-fill" src="your-photo.jpg" alt="Describe the photo">
+     The frame (border, glow, rounded corners, size) stays the same.
+     ============================================================ */
+
+  :root{
+    --bg-base:#150a24;
+    --bg-deep:#0d0617;
+    --purple:#8b2fc9;
+    --purple-deep:#5b1f96;
+    --pink:#ec4899;
+    --pink-soft:#f9a8d4;
+    --text-light:#f5eefc;
+    --text-muted:#c3aede;
+    --glass-bg:rgba(255,255,255,0.06);
+    --glass-border:rgba(236,153,241,0.28);
+    --grad-main:linear-gradient(135deg,var(--purple) 0%,var(--pink) 100%);
+    --serif:'Playfair Display', serif;
+    --sans:'Inter', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 0%, rgba(139,47,201,0.35), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 30%, rgba(236,72,153,0.25), transparent 60%),
+      var(--bg-base);
+    color:var(--text-light);
+    font-family:var(--sans);
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+  ::selection{background:var(--pink);color:#fff;}
+
+  h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-0.01em;}
+
+  a{color:inherit;text-decoration:none;}
+
+  .section{
+    position:relative;
+    padding:140px 8vw;
+    max-width:1300px;
+    margin:0 auto;
+  }
+
+  /* ---------- ambient cursor glow ---------- */
+  #ambient-glow{
+    position:fixed;
+    top:0;left:0;
+    width:600px;height:600px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(236,72,153,0.18), transparent 70%);
+    pointer-events:none;
+    transform:translate(-300px,-300px);
+    transition:transform 0.25s ease-out;
+    z-index:0;
+    filter:blur(10px);
+  }
+
+  /* ---------- floating glass nav (the "rudder") ---------- */
+  nav.floating-nav{
+    position:fixed;
+    top:28px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:4px;
+    padding:8px;
+    background:rgba(30,12,48,0.45);
+    backdrop-filter:blur(18px) saturate(160%);
+    -webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--glass-border);
+    border-radius:999px;
+    box-shadow:0 8px 32px rgba(90,10,90,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+    z-index:1000;
+    transition:padding 0.35s ease, top 0.35s ease, gap 0.35s ease;
+  }
+  nav.floating-nav.shrink{
+    top:16px;
+    padding:6px;
+    gap:2px;
+  }
+  nav.floating-nav .nav-track{
+    position:relative;
+    display:flex;
+  }
+  nav.floating-nav .indicator{
+    position:absolute;
+    top:0; left:0; height:100%;
+    border-radius:999px;
+    background:var(--grad-main);
+    box-shadow:0 0 18px rgba(236,72,153,0.55);
+    transition:transform 0.45s cubic-bezier(.22,1,.36,1), width 0.45s cubic-bezier(.22,1,.36,1);
+    z-index:0;
+  }
+  nav.floating-nav a{
+    position:relative;
+    z-index:1;
+    display:inline-block;
+    padding:10px 20px;
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:0.03em;
+    color:var(--text-muted);
+    white-space:nowrap;
+    transition:color 0.3s ease;
+  }
+  nav.floating-nav a.active{color:#fff;}
+  nav.floating-nav a:hover{color:#fff;}
+
+  @media (max-width:720px){
+    nav.floating-nav{
+      top:auto;
+      bottom:18px;
+      max-width:92vw;
+      overflow-x:auto;
+      scrollbar-width:none;
+    }
+    nav.floating-nav::-webkit-scrollbar{display:none;}
+    nav.floating-nav a{padding:9px 14px;font-size:12px;}
+  }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(36px);
+    transition:opacity 0.9s cubic-bezier(.16,1,.3,1), transform 0.9s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+  .reveal.delay-1{transition-delay:0.1s;}
+  .reveal.delay-2{transition-delay:0.2s;}
+  .reveal.delay-3{transition-delay:0.3s;}
+
+  /* ---------- placeholder image frames ---------- */
+  .ph-frame{
+    position:relative;
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid var(--glass-border);
+    box-shadow:0 0 0 1px rgba(255,255,255,0.03), 0 25px 60px -20px rgba(139,47,201,0.55);
+    background:linear-gradient(160deg, rgba(139,47,201,0.35), rgba(236,72,153,0.25));
+  }
+  .ph-frame::after{
+    content:"";
+    position:absolute;inset:0;
+    border-radius:inherit;
+    box-shadow:inset 0 0 40px rgba(236,153,241,0.12);
+    pointer-events:none;
+  }
+  .ph-frame.ratio-portrait{aspect-ratio:4/5;}
+  .ph-frame.ratio-square{aspect-ratio:1/1;}
+  .ph-frame.ratio-wide{aspect-ratio:16/10;}
+  .ph-placeholder{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    color:rgba(255,255,255,0.75);
+  }
+  .ph-placeholder svg{width:34px;height:34px;opacity:0.8;}
+  .ph-placeholder span{font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+  .ph-fill{width:100%;height:100%;object-fit:cover;display:block;}
+
+  /* glow ring aura behind hero image */
+  .aura{
+    position:absolute;
+    inset:-40px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg, var(--purple), var(--pink), var(--purple-deep), var(--purple));
+    filter:blur(60px);
+    opacity:0.55;
+    z-index:-1;
+    animation:spin 14s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding-top:100px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:60px;
+    align-items:center;
+    width:100%;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--pink-soft);
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;height:1px;
+    background:var(--pink-soft);
+  }
+  .hero h1{
+    font-size:clamp(42px, 6vw, 76px);
+    line-height:1.05;
+    background:linear-gradient(135deg,#fff 20%, var(--pink-soft) 60%, var(--purple) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .hero p.tagline{
+    margin-top:22px;
+    font-size:18px;
+    color:var(--text-muted);
+    max-width:440px;
+    line-height:1.6;
+  }
+  .cta-row{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;
+    padding:14px 30px;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.02em;
+    transition:transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .btn-primary{
+    background:var(--grad-main);
+    color:#fff;
+    box-shadow:0 10px 30px -8px rgba(236,72,153,0.65);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px -6px rgba(236,72,153,0.8);}
+  .btn-ghost{
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    color:var(--text-light);
+    backdrop-filter:blur(10px);
+  }
+  .btn-ghost:hover{transform:translateY(-2px);background:rgba(255,255,255,0.1);}
+
+  .hero-photo-wrap{position:relative;}
+  .hero-photo-wrap .ph-frame{width:100%;max-width:420px;margin-left:auto;animation:float 6s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-16px);}}
+
+  .scroll-cue{
+    position:absolute;
+    bottom:40px;left:8vw;
+    display:flex;align-items:center;gap:10px;
+    font-size:12px;letter-spacing:0.08em;
+    color:var(--text-muted);
+    text-transform:uppercase;
+  }
+  .scroll-cue .line{
+    width:1px;height:34px;
+    background:linear-gradient(var(--pink), transparent);
+    animation:pulseLine 2s ease-in-out infinite;
+  }
+  @keyframes pulseLine{0%,100%{opacity:0.3;}50%{opacity:1;}}
+
+  /* ---------- section headers ---------- */
+  .section-head{margin-bottom:56px;max-width:640px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  .section-head h2{font-size:clamp(30px,4vw,46px);}
+  .section-head p{margin-top:16px;color:var(--text-muted);font-size:16px;line-height:1.7;}
+
+  /* ---------- about ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:0.8fr 1.2fr;
+    gap:60px;
+    align-items:center;
+  }
+  .about-grid .ph-frame{width:100%;}
+  .about-text p{color:var(--text-muted);font-size:16px;line-height:1.85;margin-bottom:18px;}
+  .about-text .quote{
+    margin-top:28px;
+    padding-left:20px;
+    border-left:2px solid var(--pink);
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:19px;
+    color:var(--text-light);
+  }
+
+  /* ---------- timeline ---------- */
+  .timeline{position:relative;padding-left:32px;}
+  .timeline-line{
+    position:absolute;
+    left:0; top:6px; bottom:6px;
+    width:2px;
+    background:rgba(255,255,255,0.08);
+    overflow:hidden;
+  }
+  .timeline-line-fill{
+    position:absolute;
+    left:0; top:0; width:100%;
+    height:0%;
+    background:linear-gradient(var(--purple), var(--pink));
+    transition:height 0.2s ease-out;
+  }
+  .timeline-item{
+    position:relative;
+    padding:0 0 52px 30px;
+  }
+  .timeline-item:last-child{padding-bottom:0;}
+  .timeline-item .dot{
+    position:absolute;
+    left:-38px; top:4px;
+    width:12px;height:12px;
+    border-radius:50%;
+    background:var(--bg-base);
+    border:2px solid var(--pink);
+    box-shadow:0 0 0 4px rgba(236,72,153,0.15);
+  }
+  .timeline-item .year{
+    font-family:var(--serif);
+    font-size:14px;
+    color:var(--pink-soft);
+    letter-spacing:0.08em;
+    margin-bottom:6px;
+    display:block;
+  }
+  .timeline-item h3{font-size:20px;margin-bottom:8px;}
+  .timeline-item p{color:var(--text-muted);font-size:15px;line-height:1.7;max-width:520px;}
+
+  /* ---------- portfolio ---------- */
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .gallery-item{cursor:pointer;}
+  .gallery-item .ph-frame{transition:transform 0.5s cubic-bezier(.22,1,.36,1), box-shadow 0.5s ease;}
+  .gallery-item:hover .ph-frame{transform:translateY(-8px) scale(1.02);box-shadow:0 30px 70px -15px rgba(236,72,153,0.6);}
+  .gallery-item .cap{margin-top:14px;}
+  .gallery-item .cap .title{font-size:15px;font-weight:500;}
+  .gallery-item .cap .sub{font-size:13px;color:var(--text-muted);margin-top:2px;}
+  .gallery-item:nth-child(2){margin-top:36px;}
+  .gallery-item:nth-child(3){margin-top:-12px;}
+
+  @media (max-width:900px){
+    .gallery{grid-template-columns:repeat(2,1fr);}
+    .gallery-item:nth-child(n){margin-top:0;}
+  }
+  @media (max-width:560px){
+    .gallery{grid-template-columns:1fr;}
+  }
+
+  /* lightbox */
+  .lightbox{
+    position:fixed;inset:0;
+    background:rgba(10,4,18,0.9);
+    backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    z-index:2000;
+    opacity:0;pointer-events:none;
+    transition:opacity 0.35s ease;
+    padding:6vh 6vw;
+  }
+  .lightbox.open{opacity:1;pointer-events:auto;}
+  .lightbox .ph-frame{max-width:560px;width:100%;}
+  .lightbox-close{
+    position:absolute;top:32px;right:5vw;
+    width:42px;height:42px;
+    border-radius:50%;
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    color:#fff;font-size:18px;
+  }
+
+  /* ---------- skills ---------- */
+  .skills-list{display:flex;flex-direction:column;gap:26px;max-width:640px;}
+  .skill-row .top-line{display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px;}
+  .skill-row .top-line .label{font-weight:500;}
+  .skill-row .top-line .pct{color:var(--pink-soft);font-family:var(--serif);}
+  .bar-track{height:8px;border-radius:999px;background:rgba(255,255,255,0.08);overflow:hidden;}
+  .bar-fill{
+    height:100%;border-radius:999px;
+    background:var(--grad-main);
+    width:0%;
+    box-shadow:0 0 14px rgba(236,72,153,0.5);
+    transition:width 1.4s cubic-bezier(.16,1,.3,1);
+  }
+
+  /* ---------- contact ---------- */
+  .contact-box{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:34px;
+    padding:64px;
+    border-radius:28px;
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(16px);
+    position:relative;
+    overflow:hidden;
+  }
+  .contact-box::before{
+    content:"";
+    position:absolute;
+    width:340px;height:340px;
+    background:radial-gradient(circle, rgba(236,72,153,0.35), transparent 70%);
+    top:-140px;right:-100px;
+    border-radius:50%;
+    filter:blur(10px);
+  }
+  .contact-box h2{font-size:clamp(28px,4vw,42px);max-width:520px;}
+  .social-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .social-btn{
+    display:flex;align-items:center;gap:10px;
+    padding:13px 22px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--glass-border);
+    font-size:14px;
+    transition:all 0.3s ease;
+  }
+  .social-btn:hover{
+    background:var(--grad-main);
+    box-shadow:0 10px 26px -8px rgba(236,72,153,0.7);
+    transform:translateY(-2px);
+  }
+  .social-btn svg{width:16px;height:16px;}
+
+  footer{
+    text-align:center;
+    padding:50px 8vw 70px;
+    color:var(--text-muted);
+    font-size:13px;
+    position:relative;
+  }
+
+  @media (max-width:900px){
+    .hero-grid, .about-grid{grid-template-columns:1fr;}
+    .hero-photo-wrap .ph-frame{margin:0 auto;max-width:320px;}
+    .about-grid{gap:36px;}
+    .about-grid .ph-frame{order:-1;max-width:320px;margin:0 auto;}
+    .section{padding:100px 6vw;}
+    .contact-box{padding:40px 28px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="ambient-glow"></div>
+
+<!-- ============ FLOATING NAV ============ -->
+<nav class="floating-nav" id="floatingNav">
+  <div class="nav-track" id="navTrack">
+    <div class="indicator" id="navIndicator"></div>
+    <a href="#home" class="nav-link active" data-section="home">Home</a>
+    <a href="#about" class="nav-link" data-section="about">About</a>
+    <a href="#portfolio" class="nav-link" data-section="portfolio">Portfolio</a>
+    <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+    <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="section hero" id="home">
+  <div class="hero-grid">
+    <div class="reveal in-view">
+      <div class="eyebrow">Portfolio · 2026</div>
+      <h1>Her Name<br>Goes Here</h1>
+      <p class="tagline">A short line about who she is and what she creates — photographer, designer, artist, whatever fits her best.</p>
+      <div class="cta-row">
+        <a href="#portfolio" class="btn btn-primary">View Her Work</a>
+        <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap reveal in-view delay-2">
+      <div class="aura"></div>
+      <div class="ph-frame ratio-portrait">
+        <div class="ph-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Photo 1 — Hero</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section" id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="ph-frame ratio-portrait">
+        <div class="ph-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Photo 2 — About</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-text reveal delay-1">
+      <div class="eyebrow">About</div>
+      <h2 style="font-size:clamp(28px,4vw,42px);margin-bottom:18px;">A little about her</h2>
+      <p>Write two or three sentences here about her background, what she loves creating, and how she got started. Keep it in her voice.</p>
+      <p>Add a second paragraph about her style, influences, or what she's working on now.</p>
+      <p class="quote">"A short favorite quote of hers can go right here."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section class="section" id="journey">
+  <div class="section-head reveal">
+    <div class="eyebrow">Her Journey</div>
+    <h2>Milestones so far</h2>
+    <p>A running thread of moments, projects, and turning points — update these with her real story.</p>
+  </div>
+  <div class="timeline" id="timeline">
+    <div class="timeline-line"><div class="timeline-line-fill" id="timelineFill"></div></div>
+
+    <div class="timeline-item reveal">
+      <div class="dot"></div>
+      <span class="year">2020</span>
+      <h3>Where it started</h3>
+      <p>Describe the first spark — a class, a gift, a trip — whatever kicked things off.</p>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="dot"></div>
+      <span class="year">2022</span>
+      <h3>First project</h3>
+      <p>Talk about an early piece of work or milestone that mattered to her.</p>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="dot"></div>
+      <span class="year">2024</span>
+      <h3>Finding her style</h3>
+      <p>Describe how her voice or approach developed and sharpened over time.</p>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="dot"></div>
+      <span class="year">2026</span>
+      <h3>Today</h3>
+      <p>What she's focused on right now, and what's next for her.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PORTFOLIO ============ -->
+<section class="section" id="portfolio">
+  <div class="section-head reveal">
+    <div class="eyebrow">Selected Work</div>
+    <h2>Portfolio</h2>
+    <p>A curated set of her favorite pieces — click any image to view it larger.</p>
+  </div>
+  <div class="gallery">
+    <div class="gallery-item reveal" onclick="openLightbox(this)">
+      <div class="ph-frame ratio-square">
+        <div class="ph-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Photo 3</span>
+        </div>
+      </div>
+      <div class="cap"><div class="title">Project title</div><div class="sub">Short description</div></div>
+    </div>
+    <div class="gallery-item reveal delay-1" onclick="openLightbox(this)">
+      <div class="ph-frame ratio-square">
+        <div class="ph-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Photo 4</span>
+        </div>
+      </div>
+      <div class="cap"><div class="title">Project title</div><div class="sub">Short description</div></div>
+    </div>
+    <div class="gallery-item reveal delay-2" onclick="openLightbox(this)">
+      <div class="ph-frame ratio-square">
+        <div class="ph-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Photo 5</span>
+        </div>
+      </div>
+      <div class="cap"><div class="title">Project title</div><div class="sub">Short description</div></div>
+    </div>
+    <div class="gallery-item reveal" onclick="openLightbox(this)">
+      <div class="ph-frame ratio-square">
+        <div class="ph-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Photo 6</span>
+        </div>
+      </div>
+      <div class="cap"><div class="title">Project title</div><div class="sub">Short description</div></div>
+    </div>
+    <div class="gallery-item reveal delay-1" onclick="openLightbox(this)">
+      <div class="ph-frame ratio-square">
+        <div class="ph-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Photo 7</span>
+        </div>
+      </div>
+      <div class="cap"><div class="title">Project title</div><div class="sub">Short description</div></div>
+    </div>
+    <div class="gallery-item reveal delay-2" onclick="openLightbox(this)">
+      <div class="ph-frame ratio-square">
+        <div class="ph-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Photo 8</span>
+        </div>
+      </div>
+      <div class="cap"><div class="title">Project title</div><div class="sub">Short description</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section class="section" id="skills">
+  <div class="section-head reveal">
+    <div class="eyebrow">Skills</div>
+    <h2>What she's great at</h2>
+    <p>Swap these labels and percentages for her real skills.</p>
+  </div>
+  <div class="skills-list" id="skillsList">
+    <div class="skill-row reveal">
+      <div class="top-line"><span class="label">Skill One</span><span class="pct">90%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-width="90"></div></div>
+    </div>
+    <div class="skill-row reveal delay-1">
+      <div class="top-line"><span class="label">Skill Two</span><span class="pct">80%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-width="80"></div></div>
+    </div>
+    <div class="skill-row reveal delay-2">
+      <div class="top-line"><span class="label">Skill Three</span><span class="pct">70%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-width="70"></div></div>
+    </div>
+    <div class="skill-row reveal delay-3">
+      <div class="top-line"><span class="label">Skill Four</span><span class="pct">95%</span></div>
+      <div class="bar-track"><div class="bar-fill" data-width="95"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section" id="contact">
+  <div class="contact-box reveal">
+    <div>
+      <div class="eyebrow">Contact</div>
+      <h2>Let's get in touch</h2>
+    </div>
+    <div class="social-row">
+      <a class="social-btn" href="#"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-1.02-.01-1.85-2.5.46-3.15-.61-3.35-1.17-.11-.28-.6-1.17-1.02-1.4-.35-.19-.85-.66-.01-.67.79-.01 1.35.72 1.54 1.02.9 1.52 2.35 1.09 2.92.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.4 9.4 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.58 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg> GitHub</a>
+      <a class="social-btn" href="#"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56a5.9 5.9 0 0 0-2.13 1.39A5.9 5.9 0 0 0 .62 4.14c-.3.76-.5 1.63-.56 2.91C0 8.33 0 8.74 0 12s.01 3.67.06 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.39 2.13.67.67 1.34 1.08 2.13 1.39.76.3 1.63.5 2.91.56C8.33 24 8.74 24 12 24s3.67-.01 4.95-.06c1.28-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.39 5.9 5.9 0 0 0 1.39-2.13c.3-.76.5-1.63.56-2.91.05-1.28.06-1.69.06-4.95s-.01-3.67-.06-4.95c-.06-1.28-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.39-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 16 12a4 4 0 0 1-4 4zM18.41 4.6a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44z"/></svg> Instagram</a>
+      <a class="social-btn" href="#"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg> Email</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Made with care · Purple &amp; Pink Portfolio
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+  <div class="ph-frame ratio-square" id="lightboxContent">
+    <div class="ph-placeholder">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h3l2-2h6l2 2h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>
+      <span>Photo</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------- ambient glow follows cursor ----------
+  const glow = document.getElementById('ambient-glow');
+  window.addEventListener('mousemove', (e)=>{
+    glow.style.transform = `translate(${e.clientX-300}px, ${e.clientY-300}px)`;
+  });
+
+  // ---------- reveal on scroll ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el=>io.observe(el));
+
+  // ---------- skill bars fill on view ----------
+  const bars = document.querySelectorAll('.bar-fill');
+  const barIo = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.style.width = entry.target.dataset.width + '%';
+      }
+    });
+  }, { threshold: 0.4 });
+  bars.forEach(b=>barIo.observe(b));
+
+  // ---------- timeline draw line ----------
+  const timelineEl = document.getElementById('timeline');
+  const timelineFill = document.getElementById('timelineFill');
+  function updateTimeline(){
+    const rect = timelineEl.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = rect.height;
+    let progress = (vh * 0.8 - rect.top) / total;
+    progress = Math.max(0, Math.min(1, progress));
+    timelineFill.style.height = (progress*100) + '%';
+  }
+  window.addEventListener('scroll', updateTimeline);
+  updateTimeline();
+
+  // ---------- nav active state + sliding indicator ----------
+  const navLinks = document.querySelectorAll('.nav-link');
+  const navIndicator = document.getElementById('navIndicator');
+  const floatingNav = document.getElementById('floatingNav');
+  const sections = ['home','about','portfolio','skills','contact'].map(id=>document.getElementById(id));
+
+  function moveIndicator(link){
+    navIndicator.style.width = link.offsetWidth + 'px';
+    navIndicator.style.transform = `translateX(${link.offsetLeft}px)`;
+  }
+
+  function setActive(id){
+    navLinks.forEach(l=>{
+      if(l.dataset.section === id){
+        l.classList.add('active');
+        moveIndicator(l);
+      } else {
+        l.classList.remove('active');
+      }
+    });
+  }
+
+  navLinks.forEach(link=>{
+    link.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const target = document.getElementById(link.dataset.section) || document.getElementById(link.getAttribute('href').slice(1));
+      if(target) target.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  const sectionIo = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        setActive(entry.target.id);
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s=>{ if(s) sectionIo.observe(s); });
+
+  window.addEventListener('scroll', ()=>{
+    floatingNav.classList.toggle('shrink', window.scrollY > 80);
+  });
+
+  window.addEventListener('load', ()=>{
+    setActive('home');
+  });
+  window.addEventListener('resize', ()=>{
+    const activeLink = document.querySelector('.nav-link.active');
+    if(activeLink) moveIndicator(activeLink);
+  });
+
+  // ---------- lightbox ----------
+  function openLightbox(el){
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.getElementById('lightbox').addEventListener('click', (e)=>{
+    if(e.target.id === 'lightbox') closeLightbox();
+  });
+</script>
+
+</body>
+</html>
